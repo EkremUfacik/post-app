@@ -1,20 +1,23 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import PostCard from "../components/PostCard";
-import useAxios from "../hooks/useAxios";
+import { postAdd } from "../features/postSlice";
+import usePostCalls from "../hooks/usePostCalls";
 
 const Main = () => {
   const [posts, setPosts] = useState([]);
-  const { axiosUrl } = useAxios();
-  const user_id = 1;
-
-  const getPosts = async () => {
-    const res = await axiosUrl.get(`?userId=${user_id}`);
-    setPosts(res.data);
-  };
+  const dispatch = useDispatch();
+  const { getPosts } = usePostCalls();
 
   useEffect(() => {
-    getPosts();
+    getPosts(setPosts);
+    // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    dispatch(postAdd(posts.length));
+    // eslint-disable-next-line
+  }, [posts]);
 
   return (
     <div className="flex flex-wrap justify-center items-center gap-12 mt-8 py-12 px-4 w-11/12 m-auto bg-white">

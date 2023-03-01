@@ -1,12 +1,15 @@
 import React from "react";
 import { BiPencil } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
-import useAxios from "../hooks/useAxios";
 import { HiOutlineArrowNarrowLeft } from "react-icons/hi";
+import { useDispatch } from "react-redux";
+import { postInc } from "../features/postSlice";
+import usePostCalls from "../hooks/usePostCalls";
 
-const UpdatePost = ({ data, setData }) => {
-  const { axiosUrl } = useAxios();
+const PostForm = ({ data, setData }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { newPost, updatePost } = usePostCalls();
   console.log(data);
 
   const handleChange = (e) => {
@@ -18,11 +21,12 @@ const UpdatePost = ({ data, setData }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (data.id) {
-      const res = await axiosUrl.put(`${data.id}`, data);
+      updatePost(data);
       alert("Post Updated!");
     } else {
-      const res = await axiosUrl.post("", data);
+      newPost(data);
       alert("Post Added!");
+      dispatch(postInc());
     }
 
     navigate(-1);
@@ -66,4 +70,4 @@ const UpdatePost = ({ data, setData }) => {
   );
 };
 
-export default UpdatePost;
+export default PostForm;

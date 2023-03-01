@@ -3,9 +3,11 @@ import { HiBell } from "react-icons/hi";
 import { BiCategory } from "react-icons/bi";
 import { AiFillPlayCircle } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const { postCount } = useSelector((state) => state.postCount);
   return (
     <nav className="flex justify-between py-3 px-6 bg-white w-11/12 m-auto">
       <div className="flex gap-5 cursor-pointer" onClick={() => navigate("/")}>
@@ -18,8 +20,8 @@ const Navbar = () => {
       <div className="flex gap-5 items-center">
         <p className="relative font-semibold">
           Posts
-          <span className="absolute left-7 bottom-4 text-xs bg-green-200 rounded-full ">
-            10
+          <span className="absolute left-8 bottom-4 text-xs bg-green-200 rounded-full ">
+            {postCount}
           </span>
         </p>
         <HiBell className="text-xl text-gray-500" />

@@ -3,36 +3,19 @@ import { HiOutlineArrowNarrowLeft } from "react-icons/hi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { BiPencil } from "react-icons/bi";
 import { useNavigate, useParams } from "react-router-dom";
-import useAxios from "../hooks/useAxios";
+import usePostCalls from "../hooks/usePostCalls";
 
 const PostDetail = () => {
   const { id } = useParams();
   const [postInfo, setPostInfo] = useState([]);
   const [commentsInfo, setCommentsInfo] = useState([]);
-  const { axiosUrl } = useAxios();
   const navigate = useNavigate();
-
-  const getDetail = async () => {
-    const res = await axiosUrl(id);
-    setPostInfo(res.data);
-  };
-
-  const deletePost = async () => {
-    await axiosUrl.delete(id);
-    alert("Post Deleted!");
-    navigate("/");
-  };
-
-  const getComment = async () => {
-    const res = await axiosUrl(`${id}/comments`);
-    setCommentsInfo(res.data);
-  };
-
-  console.log(commentsInfo);
+  const { getPostDetail, deletePost, getComment } = usePostCalls();
 
   useEffect(() => {
-    getDetail();
-    getComment();
+    getPostDetail(id, setPostInfo);
+    getComment(id, setCommentsInfo);
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -73,7 +56,7 @@ const PostDetail = () => {
           <div className="text-end mt-12 flex gap-4 justify-end items-center">
             <button
               className="bg-red-600 text-white px-4 py-1 rounded-lg  flex justify-center items-center gap-1"
-              onClick={deletePost}
+              onClick={() => deletePost(id)}
             >
               <RiDeleteBin6Line /> Delete
             </button>
@@ -88,7 +71,7 @@ const PostDetail = () => {
           <h2 className="font-bold text-xl my-4">Comments</h2>
           <div className="bg-gray-200 pb-4">
             {commentsInfo?.map((comment, index) => (
-              <div>
+              <div key={index}>
                 <h4 className="font-bold p-2">{comment.name}</h4>
                 <div className="bg-white p-3 mx-4 rounded-lg">
                   {comment.body}

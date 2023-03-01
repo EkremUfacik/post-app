@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import UpdatePost from "../components/PostForm";
+import PostForm from "../components/PostForm";
 
 const PostCreate = () => {
   const initialData = {
@@ -10,7 +10,7 @@ const PostCreate = () => {
 
   return (
     <div className="w-11/12 m-auto bg-white mt-8 p-8">
-      <UpdatePost data={data} setData={setData} />
+      <PostForm data={data} setData={setData} />
     </div>
   );
 };
